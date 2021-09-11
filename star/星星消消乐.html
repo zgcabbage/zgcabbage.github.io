@@ -1,0 +1,67 @@
+
+<style>
+
+    *{
+        padding: 0;
+        margin: 0;
+    }
+   html,body{
+        height: 100%;
+        background-color: black;
+    }
+    .blood {
+    width: 200px;
+    height: 20px;
+    border: solid #fff 1px;
+}
+    .blood span {
+    height: 20px;
+    display: inline-block;
+    background-color: red;
+    position: relative;
+    z-index: 99;
+}
+</style>
+<body> 
+    <div class="blood"><span style="width: 200px;"></span></div>
+</body>
+<script>
+function random(min,max){
+        return Math.floor(Math.random()*(max-min+1)+min)
+    }
+//随机出现小星星
+var timer =setInterval(function(){
+    var imgObj = document.createElement("img")
+    imgObj.src = "./star.gif"
+    imgObj.style.width = random(40,60)
+    imgObj.style.height = random(40,60)
+    imgObj.style.position = "absolute"
+    imgObj.style.zIndex = 1
+    var maxHeight = (window.innerHeight || document.documentElement.clientHeight)-imgObj.height//易忘点
+    imgObj.style.top = random(0,maxHeight)+"px"
+    var maxWidth = (window.innerWidth || document.documentElement.clientWidth)-imgObj.width
+    imgObj.style.left= random(0,maxWidth)+"px"
+    document.body.appendChild(imgObj)
+},1000) 
+var spanObj = document.querySelector("span")
+var width = parseInt(spanObj.style.width)
+var timer1 =setInterval(function(){
+    width-=20
+    spanObj.style.width = width +"px"//这个是span的款段在变
+    if(width<0){
+        alert('不要再点了，你点不动了，放弃吧')
+        clearInterval(timer1)
+        clearInterval(timer)
+        document.body.onclick = null
+    }
+},1000)
+document.body.onclick = function(evt){
+    var e = evt || window.event
+    var target = e.target || e.srcElement
+    if(target.nodeName=="IMG"){
+        document.body.removeChild(target)
+        width+=15
+        spanObj.style.width = width +"px"
+    }
+}
+</script>
